@@ -578,7 +578,7 @@ public class MainFrame extends javax.swing.JFrame {
     btstop.setEnabled(true);
     btPausa.setEnabled(false);
   }
-  
+  //
   MusicModel modeloMusicas = new MusicModel();
   JFileChooser fc = new JFileChooser();
   JFileChooser jcSalvaLista = new JFileChooser();
