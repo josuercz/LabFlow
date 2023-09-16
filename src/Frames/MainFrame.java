@@ -397,18 +397,13 @@ public class MainFrame extends javax.swing.JFrame {
   private void btnPlayActionPerformed(ActionEvent evt)
   {
     final Integer linea = Integer.valueOf(tbPlayList.getSelectedRow());
-    if (linea.intValue() > -1)
-    {
-
-      new Thread()
-      {
-        public void run()
-        {
+    if (linea.intValue() > -1)  {
+      new Thread() {
+        public void run(){
           line = linea;
           stop = Boolean.valueOf(false);
           while ((!stop.booleanValue()) && (line.intValue() < modeloMusica.getRowCount())) {
-            try
-            {
+            try  {
               player = new Player(new java.io.FileInputStream(new File(modeloMusica.getMusica(line.intValue()).getPath())));
               
               lblTiempoRecorrido.setText(String.valueOf(player.getPosition()));
@@ -429,26 +424,20 @@ public class MainFrame extends javax.swing.JFrame {
               } else {
                 localInteger1 = line;Integer localInteger2 = MainFrame.this.line = Integer.valueOf(line.intValue() + 1);
               }
-              if (line.intValue() == modeloMusica.getRowCount())
-              {
+              if (line.intValue() == modeloMusica.getRowCount())  {
                 Integer lineaSelecionada = Integer.valueOf(tbPlayList.getSelectedRow());
-                if (lineaSelecionada.intValue() > -1)
-                {
+                if (lineaSelecionada.intValue() > -1) {
                   lblTituloCancion.setText("Cancion:");
                   lblAutor.setText(modeloMusica.getMusica(tbPlayList.getSelectedRow()).getAutor());
                   lblPlaying.setText(modeloMusica.getMusica(tbPlayList.getSelectedRow()).getNombre());
-                }
-                else
-                {
+                } else {
                   lblTituloCancion.setText("Cancion:");
                   lblAutor.setText("");
                   lblPlaying.setText("");
-                }
-                
+                }                
               }
             }
-            catch (Exception ex)
-            {
+            catch (Exception ex) {
               System.out.println(ex.getMessage());
             }
           }
@@ -457,6 +446,9 @@ public class MainFrame extends javax.swing.JFrame {
       btnPlay.setEnabled(false);
       btnStop.setEnabled(true);
       btnPausa.setEnabled(true);
+    }
+    else {
+        JOptionPane.showMessageDialog(null, "Elegir una cancion primero");
     }
   }
 
