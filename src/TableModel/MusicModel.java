@@ -4,64 +4,60 @@ import Music.Music;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import javax.swing.JOptionPane;
 import javax.swing.table.AbstractTableModel;
 
 
 
-public class MusicModel
-  extends AbstractTableModel
-{
-  private final String[] colunas = { "Nombre", "Autor", "Album" };
+public class MusicModel extends AbstractTableModel {
+  private final String[] columnas = { "Nombre", "Autor", "Album" };
   
 
-  private ArrayList<Music> linhas;
+  private ArrayList<Music> lineas;
   
 
 
   public MusicModel()
   {
-    linhas = new ArrayList();
+    lineas = new ArrayList();
   }
   
-  public MusicModel(ArrayList<Music> linhas) {
-    this.linhas = linhas;
+  public MusicModel(ArrayList<Music> lineas) {
+    this.lineas = lineas;
   }
   
 
   public int getRowCount()
   {
-    return linhas.size();
+    return lineas.size();
   }
   
   public int getColumnCount()
   {
-    return colunas.length;
+    return columnas.length;
   }
   
   public Object getValueAt(int rowIndex, int columnIndex)
   {
-    Music m = (Music)linhas.get(rowIndex);
+    Music m = (Music)lineas.get(rowIndex);
     switch (columnIndex) {
     case 0: 
-      return m.getNome();
+      return m.getNombre();
     case 1: 
       return m.getAutor();
     case 2: 
       return m.getAlbum();
     }
-    
-    
     return null;
   }
   
-
-  public void setValueAt(Object objetct, int rowIndex, int columnIndex)
+  public void setValueAt(Object object, int rowIndex, int columnIndex)
   {
-    Music m = (Music)linhas.get(rowIndex);
-    String value = (String)objetct;
+    Music m = (Music)lineas.get(rowIndex);
+    String value = (String)object;
     switch (columnIndex) {
     case 0: 
-      m.setNome(value);
+      m.setNombre(value);
       break;
     case 1: 
       m.setAutor(value);
@@ -70,17 +66,12 @@ public class MusicModel
       m.setAlbum(value);
       break;
     }
-    
-    
-
     fireTableRowsInserted(rowIndex, rowIndex);
   }
-  
-
 
   public String getColumnName(int column)
   {
-    return colunas[column];
+    return columnas[column];
   }
   
 
@@ -98,62 +89,46 @@ public class MusicModel
     return null;
   }
   
-
-  public void limpar()
-  {
-    linhas.clear();
-    
-
-    fireTableDataChanged();
-  }
-  
-  public void addListaDeMusicas(List<Music> musicas)
-  {
-    int indice = getRowCount();
-    
-
-    linhas.addAll(musicas);
-    
-
-    fireTableRowsInserted(indice, indice + musicas.size());
-  }
-  
   public Music getMusica(int rowIndex)
   {
-    return (Music)linhas.get(rowIndex);
+    return (Music)lineas.get(rowIndex);
   }
   
-  public void addMusica(Music musica)
-  {
-    linhas.add(musica);
-    
-
-
-
-    int ultimoIndice = getRowCount() - 1;
-    
-
-    fireTableRowsInserted(ultimoIndice, ultimoIndice);
+  public boolean cancionYaAgregada(Music musica){
+      for (int i = 0; i < lineas.size(); i++) {
+          if (lineas.get(i).getPath().equals(musica.getPath()))
+              return true;                
+      }
+      return false;
   }
   
+public void addMusica(Music musica) {
+    String extension = "";
+    int i = musica.getPath().lastIndexOf('.');
+    if (i > 0) {
+        extension = musica.getPath().substring(i+1);
+    }
 
-  public void removeMusica(int indiceLinha)
-  {
-    linhas.remove(indiceLinha);
-    
+    if (extension.equals("mp3")) {
+        boolean add = cancionYaAgregada(musica);
+        if (!add)
+            lineas.add(musica);
+        else 
+            JOptionPane.showMessageDialog(null, "Cancion ya agregada");
+        int ultimoIndice = getRowCount() - 1;
+        fireTableRowsInserted(ultimoIndice, ultimoIndice);
+    } else {
+        JOptionPane.showMessageDialog(null, "El archivo no es mp3");
+    }
+}
+  
 
+  public void removeMusic(int indiceLinha) {
+    lineas.remove(indiceLinha);
     fireTableRowsDeleted(indiceLinha, indiceLinha);
   }
   
   public ArrayList<Music> getAsArrayList() {
-    return linhas;
-  }
-  
-  public void mistura() {
-    Collections.shuffle(linhas);
-    
-
-
-    fireTableRowsUpdated(0, linhas.size() - 1);
+    return lineas;
   }
 }

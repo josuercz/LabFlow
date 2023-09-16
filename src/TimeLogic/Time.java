@@ -1,20 +1,14 @@
-package Utils;
+package TimeLogic;
 
-import java.io.PrintStream;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JSlider;
 import javazoom.jl.player.Player;
 
-
-
-public class Time
-  extends Thread
-{
-  JLabel lbtempo;
+public class Time extends Thread {
+  JLabel lblTiempo;
   Player player;
   Long duration;
   JSlider slider;
@@ -38,15 +32,14 @@ public class Time
     stopFlag = Boolean.valueOf(true);
   }
   
-  public Time(JLabel tempo, Player player, Long duration, JSlider slider)
+  public Time(JLabel tiempo, Player player, Long duration, JSlider slider)
   {
-    lbtempo = tempo;
+    lblTiempo = tiempo;
     this.player = player;
     this.duration = duration;
     this.slider = slider;
     stopFlag = Boolean.valueOf(false);
   }
-  
 
   public void run()
   {
@@ -54,8 +47,6 @@ public class Time
     Calendar cad = Calendar.getInstance();
     cad.clear();
     Date data = new Date(cad.getTime().getTime());
-    
-
 
     slider.setMaximum(duration.intValue());
     while (!stopFlag.booleanValue())
@@ -66,7 +57,7 @@ public class Time
       cad.add(13, value.intValue());
       slider.setValue(value.intValue());
       data.setTime(cad.getTime().getTime());
-      lbtempo.setText(dt.format(data));
+      lblTiempo.setText(dt.format(data));
       
       try
       {
@@ -74,6 +65,6 @@ public class Time
       } catch (Exception ex) {} }
     System.out.println(stopFlag);
     slider.setValue(0);
-    lbtempo.setText("00:00:00");
+    lblTiempo.setText("00:00:00");
   }
 }
